@@ -12,4 +12,3 @@ RUN apt-get update && \
     usermod -aG docker jenkins
 
 USER jenkins
-docke
