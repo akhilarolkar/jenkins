@@ -2,13 +2,18 @@ FROM jenkins/jenkins:lts
 
 # Switch to root user to install dependencies
 USER root
-# Install AWS CLI
+
+# Install Git, AWS CLI, and Docker
 RUN apt-get update && \
-    apt-get install -y curl unzip && \
+    apt-get install -y git curl unzip docker.io && \
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
     ./aws/install && \
-    rm -rf awscliv2.zip
+    rm -rf awscliv2.zip && \
+    usermod -aG docker jenkins
+
+# Allow Jenkins to access Docker daemon
+RUN chmod 666 /var/run/docker.sock
 
 # Switch back to Jenkins user
 USER jenkins
